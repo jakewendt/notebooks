@@ -1,0 +1,22 @@
+GEM
+  specs:
+    bond (0.5.1)
+    data_uri (0.1.0)
+    iruby (0.3)
+      bond (~> 0.5)
+      data_uri (~> 0.1)
+      mimemagic (~> 0.3)
+      multi_json (~> 1.11)
+    mimemagic (0.3.2)
+    multi_json (1.13.1)
+    rbczmq (1.7.9)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  iruby
+  rbczmq
+
+BUNDLED WITH
+   1.16.1
