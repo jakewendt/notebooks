@@ -1,0 +1,48 @@
+
+
+aws s3 cp s3://1000genomes/phase3/data/HG02790/cg_data/HG02790_blood_SRR833683.wgs.COMPLETE_GENOMICS.20130401.snps_indels_svs_meis.high_coverage.genotypes.vcf.gz ./
+
+
+cp ~/s3/herv/from_genepi/TCGA_Glioma_HERV52/TCGA-41-5651-* ./
+
+samtools fastq -N -1 TCGA-41-5651-01A.1.fastq.gz -2 TCGA-41-5651-01A.2.fastq.gz TCGA-41-5651-01A.bam 
+\rm TCGA-41-5651-01A.bam
+
+bowtie2 --threads 4 -x hg38 --very-sensitive-local -1 TCGA-41-5651-01A.1.fastq.gz -2 TCGA-41-5651-01A.2.fastq.gz -S TCGA-41-5651-01A.sam
+samtools sort --threads 3 -o TCGA-41-5651-01A.bam TCGA-41-5651-01A.sam
+\rm TCGA-41-5651-01A.sam
+chmod -w TCGA-41-5651-01A.bam
+samtools index TCGA-41-5651-01A.bam
+chmod -w TCGA-41-5651-01A.bam.bai
+bcftools mpileup -Ou -f ~/s3/herv/indexes/hg38.fa TCGA-41-5651-01A.bam | bcftools call -mvO z -o TCGA-41-5651-01A.vcf.gz
+chmod -w TCGA-41-5651-01A.vcf.gz
+
+zcat TCGA-41-5651-01A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){print $1"\t"$2}' > TCGA-41-5651-01A.CT.txt
+
+
+
+samtools fastq -N -1 TCGA-41-5651-10A.1.fastq.gz -2 TCGA-41-5651-10A.2.fastq.gz TCGA-41-5651-10A.bam 
+\rm TCGA-41-5651-10A.bam
+bowtie2 --threads 4 -x hg38 --very-sensitive-local -1 TCGA-41-5651-10A.1.fastq.gz -2 TCGA-41-5651-10A.2.fastq.gz -S TCGA-41-5651-10A.sam
+samtools sort --threads 3 -o TCGA-41-5651-10A.bam TCGA-41-5651-10A.sam
+\rm TCGA-41-5651-10A.sam
+chmod -w TCGA-41-5651-10A.bam
+samtools index TCGA-41-5651-10A.bam
+chmod -w TCGA-41-5651-10A.bam.bai
+bcftools mpileup -Ou -f ~/s3/herv/indexes/hg38.fa TCGA-41-5651-10A.bam | bcftools call -mvO z -o TCGA-41-5651-10A.vcf.gz
+chmod -w TCGA-41-5651-10A.vcf.gz
+
+
+zcat TCGA-41-5651-10A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){print $1"\t"$2}' > TCGA-41-5651-10A.CT.txt
+
+
+
+
+Notebook
+
+create function that creates histograms
+
+
+
+
+
