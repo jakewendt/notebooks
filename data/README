@@ -1,4 +1,8 @@
 
+#	bcftools.  -c or -m ??? All examples found use -m
+#   -c, --consensus-caller          the original calling method (conflicts with -m)
+#   -m, --multiallelic-caller       alternative model for multiallelic and rare-variant calling (conflicts with -c)
+ 
 
 aws s3 cp s3://1000genomes/phase3/data/HG02790/cg_data/HG02790_blood_SRR833683.wgs.COMPLETE_GENOMICS.20130401.snps_indels_svs_meis.high_coverage.genotypes.vcf.gz ./
 
@@ -15,9 +19,15 @@ chmod -w TCGA-41-5651-01A.bam
 samtools index TCGA-41-5651-01A.bam
 chmod -w TCGA-41-5651-01A.bam.bai
 bcftools mpileup -Ou -f ~/s3/herv/indexes/hg38.fa TCGA-41-5651-01A.bam | bcftools call -mvO z -o TCGA-41-5651-01A.vcf.gz
+bcftools mpileup -Ou -f ~/s3/herv/indexes/hg38.fa TCGA-41-5651-01A.bam | bcftools call -cvO z -o TCGA-41-5651-01A.c.vcf.gz
 chmod -w TCGA-41-5651-01A.vcf.gz
 
 zcat TCGA-41-5651-01A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){print $1"\t"$2}' > TCGA-41-5651-01A.CT.txt
+
+zcat TCGA-41-5651-01A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){while("samtools faidx ~/s3/herv/indexes/hg38.fa "$1":"$2-1"-"$2+1" " | getline x ){};print $1"\t"$2"\t"toupper(x)}' > TCGA-41-5651-01A.CT.tri.txt
+
+
+#	using the while(){} loop in awk is to return the last line from samtools faidx
 
 
 
@@ -38,9 +48,8 @@ zcat TCGA-41-5651-10A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){pr
 
 
 
-Notebook
+zcat TCGA-41-5651-10A.vcf.gz | awk -F"\t" '( !/^#/ && $4 == "C" && $5 == "T"){while("samtools faidx ~/s3/herv/indexes/hg38.fa "$1":"$2-1"-"$2+1" " | getline x ){};print $1"\t"$2"\t"toupper(x)}' > TCGA-41-5651-10A.CT.tri.txt
 
-create function that creates histograms
 
 
 
