@@ -23,6 +23,7 @@
 /breast-cancer-wisconsin.data
 /cosmic/
 /count_matrix.csv
+/count_matrix2.csv
 /hail-20190624-1612-0.2.16-6da0d3571629.log
 /hail-20190624-1613-0.2.16-6da0d3571629.log
 /hail-20190624-1627-0.2.16-6da0d3571629.log
@@ -36,3 +37,4 @@
 /out.csv
 /report/
 /results.csv
+/TCGA.Glioma.metadata.tsv
