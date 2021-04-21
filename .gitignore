@@ -38,3 +38,5 @@
 /report/
 /results.csv
 /TCGA.Glioma.metadata.tsv
+/focused.T.csv.gz
+/focused.csv.gz
